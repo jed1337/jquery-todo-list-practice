@@ -24,21 +24,35 @@ $(document)
 
         // code to be implemented
 
+        setFunctionalitiesToExistingElements();
+
         $("div#button").on({
             click: function () {
-                addToTodoList(getInputText())
+                addToTodoList(getInputText());
+                setFunctionalitiesToExistingElements();
             }
         });
 
         function addToTodoList(text) {
             let input = $("<input>", {name: "done-todo", type: "checkbox", class: "done-todo"});
             let li = $("<li>", {id: generateUUID(), class: "", html: input});
-
             li.append(text);
+
             $("ol").append(li);
         }
 
         function getInputText() {
             return $("input.input-text").val();
+        }
+
+        function setFunctionalitiesToExistingElements() {
+            $("input").click(function () {
+                if($(this).is(':checked')){
+                    $(this).parent().addClass("checked");
+                }
+                else{
+                    $(this).parent().removeClass("checked");
+                }
+            });
         }
     });
