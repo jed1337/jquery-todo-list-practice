@@ -1,3 +1,4 @@
+"use strict";
 $(document)
     .ready(function () {
 
@@ -22,4 +23,22 @@ $(document)
         }
 
         // code to be implemented
+
+        $("div#button").on({
+            click: function () {
+                addToTodoList(getInputText())
+            }
+        });
+
+        function addToTodoList(text) {
+            let input = $("<input>", {name: "done-todo", type: "checkbox", class: "done-todo"});
+            let li = $("<li>", {id: generateUUID(), class: "", html: input});
+
+            li.append(text);
+            $("ol").append(li);
+        }
+
+        function getInputText() {
+            return $("input.input-text").val();
+        }
     });
