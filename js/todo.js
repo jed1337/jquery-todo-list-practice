@@ -25,18 +25,29 @@ $(document)
         }
 
         // code to be implemented
+        const $inputField = $("input.input-text");
 
         setFunctionalitiesToExistingElements();
 
         $("div#button").on({
-            click: function () {
-                addToTodoList(getInputText());
-                setFunctionalitiesToExistingElements();
+            click: addNewTodoItem
+        });
+
+        $inputField.keypress(function(ev){
+            const key = (ev.keyCode ? ev.keyCode : ev.which);
+            if (key === ENTER_KEY) {
+                addNewTodoItem();
             }
         });
 
+        function addNewTodoItem() {
+            addToTodoList(getInputText());
+            setFunctionalitiesToExistingElements();
+            clearInputArea();
+        }
+
         function getInputText() {
-            return $("input.input-text").val();
+            return $inputField.val();
         }
 
         function addToTodoList(text) {
@@ -73,5 +84,9 @@ $(document)
                     $(this).attr("contenteditable", false);
                 }
             });
+        }
+
+        function clearInputArea() {
+            $inputField.val("");
         }
     });
