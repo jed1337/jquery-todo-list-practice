@@ -45,13 +45,10 @@ $(document)
         });
 
         function addNewTodoItem() {
-            addToTodoList(getInputText());
+            addToTodoList($inputField.val());
             setFunctionalitiesToExistingElements();
+            triggerCurrentFilter();
             clearInputArea();
-        }
-
-        function getInputText() {
-            return $inputField.val();
         }
 
         function addToTodoList(text) {
@@ -89,38 +86,38 @@ $(document)
             });
         }
 
+        function triggerCurrentFilter() {
+            $("a.selected").click();
+        }
+
         function clearInputArea() {
             $inputField.val("");
         }
 
         function setFilterBehaviour() {
-            const $activeItems = $("ol>li:not(.checked)");
-            const $completedItems = $("ol>li.checked");
-            const allItems = $("ol>li");
-
             const $allFilter = $("a[data-filter=all]");
             const $activeFilter = $("a[data-filter=active]");
             const $completeFilter = $("a[data-filter=complete]");
 
             $allFilter.click(function () {
-                unSelect();
-                allItems.show();
+                unSelectFilters();
+                $("ol>li").show();
                 $allFilter.addClass(SELECTED);
             });
             $activeFilter.click(function () {
-                unSelect();
-                $activeItems.show();
-                $completedItems.hide();
+                unSelectFilters();
+                $("ol>li:not(.checked)").show();
+                $("ol>li.checked").hide();
                 $activeFilter.addClass(SELECTED);
             });
             $completeFilter.click(function () {
-                unSelect();
-                $activeItems.hide();
-                $completedItems.show();
+                unSelectFilters();
+                $("ol>li:not(.checked)").hide();
+                $("ol>li.checked").show();
                 $completeFilter.addClass(SELECTED);
             });
 
-            function unSelect() {
+            function unSelectFilters() {
                 const filters = [$allFilter, $activeFilter, $completeFilter];
                 for (let filter of filters) {
                     filter.removeClass(SELECTED);
