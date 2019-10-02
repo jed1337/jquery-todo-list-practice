@@ -37,11 +37,14 @@ $(document)
             click: addNewTodoItem
         });
 
-        $inputField.keypress(function (ev) {
-            const key = (ev.keyCode ? ev.keyCode : ev.which);
-            if (key === ENTER_KEY) {
-                addNewTodoItem();
-            }
+        $inputField.on({
+            keypress: function (ev) {
+                const key = (ev.keyCode ? ev.keyCode : ev.which);
+                if (key === ENTER_KEY) {
+                    addNewTodoItem();
+                }
+            },
+            focusin: clearInputArea
         });
 
         function addNewTodoItem() {
@@ -74,7 +77,7 @@ $(document)
                 dblclick: function () {
                     $(this).attr("contenteditable", true);
                 },
-                click: function (ev) {
+                keypress: function (ev) {
                     const key = (ev.keyCode ? ev.keyCode : ev.which);
                     if (key === ENTER_KEY) {
                         $(this).attr("contenteditable", false);
