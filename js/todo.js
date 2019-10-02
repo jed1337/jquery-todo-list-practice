@@ -1,6 +1,8 @@
 "use strict";
 
 const ENTER_KEY = 13;
+const SELECTED = "selected";
+
 $(document)
     .ready(function () {
 
@@ -29,11 +31,13 @@ $(document)
 
         setFunctionalitiesToExistingElements();
 
+        setFilterBehaviour();
+
         $("div#button").on({
             click: addNewTodoItem
         });
 
-        $inputField.keypress(function(ev){
+        $inputField.keypress(function (ev) {
             const key = (ev.keyCode ? ev.keyCode : ev.which);
             if (key === ENTER_KEY) {
                 addNewTodoItem();
@@ -62,10 +66,9 @@ $(document)
 
         function setFunctionalitiesToExistingElements() {
             $("input").click(function () {
-                if($(this).is(':checked')){
+                if ($(this).is(':checked')) {
                     $(this).parent().addClass("checked");
-                }
-                else{
+                } else {
                     $(this).parent().removeClass("checked");
                 }
             });
@@ -80,7 +83,7 @@ $(document)
                         $(this).attr("contenteditable", false);
                     }
                 },
-                focusout: function(){
+                focusout: function () {
                     $(this).attr("contenteditable", false);
                 }
             });
@@ -88,5 +91,40 @@ $(document)
 
         function clearInputArea() {
             $inputField.val("");
+        }
+
+        function setFilterBehaviour() {
+            const $activeItems = $("ol>li:not(.checked)");
+            const $completedItems = $("ol>li.checked");
+            const allItems = $("ol>li");
+
+            const $allFilter = $("a[data-filter=all]");
+            const $activeFilter = $("a[data-filter=active]");
+            const $completeFilter = $("a[data-filter=complete]");
+
+            $allFilter.click(function () {
+                unSelect();
+                allItems.show();
+                $allFilter.addClass(SELECTED);
+            });
+            $activeFilter.click(function () {
+                unSelect();
+                $activeItems.show();
+                $completedItems.hide();
+                $activeFilter.addClass(SELECTED);
+            });
+            $completeFilter.click(function () {
+                unSelect();
+                $activeItems.hide();
+                $completedItems.show();
+                $completeFilter.addClass(SELECTED);
+            });
+
+            function unSelect() {
+                const filters = [$allFilter, $activeFilter, $completeFilter];
+                for (let filter of filters) {
+                    filter.removeClass(SELECTED);
+                }
+            }
         }
     });

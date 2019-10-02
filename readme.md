@@ -5,4 +5,4 @@
 - [X] Feature complete: cross out the completed todo item
 - [X] Feature complete: unchecked the completed todo item
 - [X] Feature complete: double click todo item, its text can be edited and changed, then confirm with lose focus
-- [ ] Todo App UI may same with the reference implementation
+- [X] Todo App UI may same with the reference implementation
