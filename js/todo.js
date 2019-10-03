@@ -39,10 +39,7 @@ $(document)
 
         $inputField.on({
             keypress: function (ev) {
-                const key = (ev.keyCode ? ev.keyCode : ev.which);
-                if (key === ENTER_KEY) {
-                    addNewTodoItem();
-                }
+                callBackWhenEnterIsPressed(ev, addNewTodoItem);
             },
             focusin: clearInputArea
         });
@@ -66,11 +63,7 @@ $(document)
 
         function setFunctionalitiesToExistingElements() {
             $("input").click(function () {
-                if ($(this).is(':checked')) {
-                    $(this).parent().addClass("checked");
-                } else {
-                    $(this).parent().removeClass("checked");
-                }
+                $(this).parent().toggleClass("checked");
             });
 
             $("span").on({
@@ -78,15 +71,22 @@ $(document)
                     $(this).attr("contenteditable", true);
                 },
                 keypress: function (ev) {
-                    const key = (ev.keyCode ? ev.keyCode : ev.which);
-                    if (key === ENTER_KEY) {
-                        $(this).attr("contenteditable", false);
-                    }
+                    const $this = $(this);
+                    callBackWhenEnterIsPressed(ev, function(){
+                        $this.attr("contenteditable", false);
+                    })
                 },
                 focusout: function () {
                     $(this).attr("contenteditable", false);
                 }
             });
+        }
+
+        function callBackWhenEnterIsPressed(ev, callBack){
+            const key = (ev.keyCode ? ev.keyCode : ev.which);
+            if (key === ENTER_KEY) {
+                callBack();
+            }
         }
 
         function triggerCurrentFilter() {
